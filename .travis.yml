@@ -1,11 +1,30 @@
-sudo: false
 language: node_js
-node_js:
-  - '8'
-  - '10'
+node_js: stable
+
+# S: Build Lifecycle
 install:
-  - npm i npminstall && npminstall
+  - npm install
+
+
+#before_script:
+ # - npm install -g gulp
+
 script:
-  - npm run ci
+  - hexo g
+
 after_script:
-  - npminstall codecov && codecov
+  - cd ./public
+  - git init
+  - git config user.name "Hang9527"
+  - git config user.email "898046539@qq.com"
+  - git add .
+  - git commit -m "Update docs"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
+# E: Build LifeCycle
+
+branches:
+  only:
+    - blog-source
+env:
+ global:
+   - GH_REF: github.com/Hang9527/Hang9527.github.io.git
